@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet" />
+    <title>Amadeus Operations Insights and Control</title>
+    <script>
+      (function () {
+        var theme = localStorage.getItem('portal-theme');
+        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var resolved = theme === 'dark' || (theme !== 'light' && dark) ? 'dark' : 'light';
+        document.documentElement.classList.add(resolved);
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

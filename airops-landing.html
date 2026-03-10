@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AirOps — Airline Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #04080f;
+    --navy: #060d1a;
+    --accent: #0af0ff;
+    --accent2: #0066ff;
+    --gold: #f0a800;
+    --text: #c8d8e8;
+    --dim: #3a5060;
+    --card-bg: rgba(6,20,40,0.75);
+    --card-border: rgba(0,180,255,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── CANVAS BACKGROUND ── */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.85;
+  }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 52px;
+    border-bottom: 1px solid rgba(0,180,255,0.08);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.9rem;
+    letter-spacing: 0.18em;
+    color: #fff;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--dim);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 40px 20px;
+  }
+
+  .eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.92;
+    letter-spacing: 0.04em;
+    color: #fff;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+    -webkit-text-stroke: 1px var(--accent);
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text);
+    letter-spacing: 0.08em;
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.7s forwards;
+  }
+
+  /* ── CARDS ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    opacity: 0;
+    animation: fadeUp 1s 1s forwards;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 28px 22px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(12px);
+    text-decoration: none;
+    display: block;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,180,255,0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0,240,255,0.45);
+    box-shadow: 0 0 32px rgba(0,200,255,0.12), 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    margin-bottom: 18px;
+    opacity: 0.7;
+  }
+
+  .card-icon {
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(0,220,255,0.4));
+  }
+
+  .card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--dim);
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 18px;
+    right: 20px;
+    font-size: 1.1rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(0,180,255,0.07);
+    padding: 18px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: #00ff88;
+    letter-spacing: 0.2em;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ff88;
+    animation: pulse 2s infinite;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  /* ── SCAN LINE OVERLAY ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="wrapper">
+  <nav>
+    <div class="logo">Air<span>Ops</span></div>
+    <div class="nav-tag">Airline Intelligence Platform · v2.4</div>
+  </nav>
+
+  <div class="hero">
+    <div class="eyebrow">◈ Operational Intelligence Suite</div>
+    <h1>Next-Gen<br><em>Airline</em><br>Command</h1>
+    <p class="subtitle">Four integrated AI solutions powering smarter decisions across every dimension of airline operations.</p>
+  </div>
+
+  <div class="cards">
+    <a class="card" href="#" target="_blank">
+      <div class="card-num">01 / FLEET</div>
+      <span class="card-icon">✈</span>
+      <h3>Fleet Ops</h3>
+      <p>Real-time aircraft tracking, maintenance scheduling and utilization analytics.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="card" href="#" target="_blank">
+      <div class="card-num">02 / REVENUE</div>
+      <span class="card-icon">◈</span>
+      <h3>Revenue AI</h3>
+      <p>Dynamic pricing models, demand forecasting and yield optimization engines.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="card" href="#" target="_blank">
+      <div class="card-num">03 / CREW</div>
+      <span class="card-icon">⬡</span>
+      <h3>Crew Intel</h3>
+      <p>AI-driven crew pairing, fatigue risk management and regulatory compliance.</p>
+      <span class="card-arrow">→</span>
+    </a>
+    <a class="card" href="#" target="_blank">
+      <div class="card-num">04 / OPS</div>
+      <span class="card-icon">⊕</span>
+      <h3>Ground Control</h3>
+      <p>Turnaround optimization, gate management and disruption recovery automation.</p>
+      <span class="card-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <div class="footer-text">© 2025 AIROPS INTELLIGENCE · ALL SYSTEMS OPERATIONAL</div>
+    <div class="status"><div class="status-dot"></div>LIVE · AWS DATABRICKS</div>
+  </footer>
+</div>
+
+<script>
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, animId;
+let t = 0;
+
+// --- Airplane path state ---
+const planes = [
+  { x: -80, y: 0, speed: 0.4, scale: 0.7, arc: 0.18, startY: 0.28, opacity: 0.55 },
+  { x: -80, y: 0, speed: 0.22, scale: 0.45, arc: -0.12, startY: 0.62, opacity: 0.35 },
+];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  planes[0].startY = H * 0.28;
+  planes[1].startY = H * 0.65;
+}
+
+// ── Draw airplane SVG-style shape ──
+function drawPlane(cx, cy, scale, opacity, angle) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  ctx.scale(scale, scale);
+  ctx.globalAlpha = opacity;
+
+  // fuselage
+  ctx.beginPath();
+  ctx.moveTo(40, 0);
+  ctx.bezierCurveTo(20, -4, -30, -5, -42, -3);
+  ctx.bezierCurveTo(-30, -5, -30, 5, -42, 3);
+  ctx.bezierCurveTo(-30, 5, 20, 4, 40, 0);
+  ctx.fillStyle = 'rgba(0,220,255,0.9)';
+  ctx.fill();
+
+  // main wing
+  ctx.beginPath();
+  ctx.moveTo(5, -2);
+  ctx.lineTo(-10, -32);
+  ctx.lineTo(-28, -28);
+  ctx.lineTo(-22, -2);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0,180,255,0.75)';
+  ctx.fill();
+
+  // right wing
+  ctx.beginPath();
+  ctx.moveTo(5, 2);
+  ctx.lineTo(-10, 32);
+  ctx.lineTo(-28, 28);
+  ctx.lineTo(-22, 2);
+  ctx.closePath();
+  ctx.fill();
+
+  // tail fin
+  ctx.beginPath();
+  ctx.moveTo(-32, -2);
+  ctx.lineTo(-42, -16);
+  ctx.lineTo(-44, -2);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(0,240,255,0.6)';
+  ctx.fill();
+
+  // glow
+  const grd = ctx.createRadialGradient(10, 0, 2, 10, 0, 38);
+  grd.addColorStop(0, 'rgba(0,240,255,0.25)');
+  grd.addColorStop(1, 'rgba(0,240,255,0)');
+  ctx.beginPath();
+  ctx.arc(10, 0, 38, 0, Math.PI * 2);
+  ctx.fillStyle = grd;
+  ctx.fill();
+
+  ctx.restore();
+}
+
+// ── Fractal: recursive triangle (Sierpinski-inspired) ──
+function drawFractalTri(x, y, size, depth, alpha) {
+  if (depth === 0 || size < 3) return;
+  const h = size * 0.866;
+
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = `rgba(0,${160 + depth * 18},${220 + depth * 10},${0.06 + depth * 0.025})`;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  ctx.moveTo(x, y - h * 0.667);
+  ctx.lineTo(x - size / 2, y + h * 0.333);
+  ctx.lineTo(x + size / 2, y + h * 0.333);
+  ctx.closePath();
+  ctx.stroke();
+
+  const half = size / 2;
+  const qh = h / 2;
+  drawFractalTri(x, y - h * 0.667 + qh * 0.667, half, depth - 1, alpha * 0.88);
+  drawFractalTri(x - half / 2 - half * 0.25, y + h * 0.333 - qh * 0.333, half, depth - 1, alpha * 0.88);
+  drawFractalTri(x + half / 2 + half * 0.25, y + h * 0.333 - qh * 0.333, half, depth - 1, alpha * 0.88);
+}
+
+// ── Animated hex grid ──
+function drawHexGrid() {
+  const r = 38;
+  const cols = Math.ceil(W / (r * 1.73)) + 2;
+  const rows = Math.ceil(H / (r * 1.5)) + 2;
+
+  for (let row = -1; row < rows; row++) {
+    for (let col = -1; col < cols; col++) {
+      const cx = col * r * 1.732 + (row % 2) * r * 0.866;
+      const cy = row * r * 1.5;
+      const pulse = Math.sin(t * 0.6 + cx * 0.008 + cy * 0.006) * 0.5 + 0.5;
+      ctx.globalAlpha = 0.025 + pulse * 0.035;
+      ctx.strokeStyle = `rgba(0,${140 + pulse * 80},${200 + pulse * 55},1)`;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = (Math.PI / 3) * i;
+        const px = cx + r * Math.cos(a);
+        const py = cy + r * Math.sin(a);
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+  }
+}
+
+// ── Particle network ──
+const particles = [];
+for (let i = 0; i < 55; i++) {
+  particles.push({
+    x: Math.random(),
+    y: Math.random(),
+    vx: (Math.random() - 0.5) * 0.00015,
+    vy: (Math.random() - 0.5) * 0.00015,
+    r: Math.random() * 1.8 + 0.5,
+  });
+}
+
+function drawParticles() {
+  for (const p of particles) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+    if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
+    const px = p.x * W, py = p.y * H;
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = '#0af0ff';
+    ctx.beginPath();
+    ctx.arc(px, py, p.r, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (const q of particles) {
+      const qx = q.x * W, qy = q.y * H;
+      const dx = px - qx, dy = py - qy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 130) {
+        ctx.globalAlpha = (1 - dist / 130) * 0.12;
+        ctx.strokeStyle = '#0af0ff';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(qx, qy);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+// ── Flight trail ──
+const trails = [[], []];
+
+function drawTrail(trail) {
+  if (trail.length < 2) return;
+  for (let i = 1; i < trail.length; i++) {
+    const alpha = (i / trail.length) * 0.35;
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = '#0af0ff';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(trail[i - 1].x, trail[i - 1].y);
+    ctx.lineTo(trail[i].x, trail[i].y);
+    ctx.stroke();
+  }
+}
+
+function frame() {
+  t += 0.012;
+  ctx.clearRect(0, 0, W, H);
+
+  // deep background gradient
+  const bgGrad = ctx.createRadialGradient(W * 0.5, H * 0.4, 0, W * 0.5, H * 0.4, W * 0.75);
+  bgGrad.addColorStop(0, '#071428');
+  bgGrad.addColorStop(1, '#04080f');
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // hex grid
+  drawHexGrid();
+
+  // fractal triangles — scattered
+  const seeds = [
+    [W * 0.12, H * 0.22, 200],
+    [W * 0.82, H * 0.15, 160],
+    [W * 0.65, H * 0.78, 180],
+    [W * 0.08, H * 0.75, 140],
+    [W * 0.92, H * 0.62, 120],
+  ];
+  for (const [fx, fy, fs] of seeds) {
+    const pulse = Math.sin(t * 0.4 + fx * 0.003) * 0.12 + 0.88;
+    drawFractalTri(fx, fy, fs * pulse, 4, 0.9);
+  }
+
+  // particles
+  drawParticles();
+
+  // planes
+  for (let i = 0; i < planes.length; i++) {
+    const pl = planes[i];
+    pl.x += pl.speed;
+    if (pl.x > W + 120) { pl.x = -100; trails[i] = []; }
+
+    const progress = pl.x / W;
+    const arcY = pl.startY + Math.sin(progress * Math.PI) * H * pl.arc;
+    const angle = Math.cos(progress * Math.PI) * pl.arc * 1.2;
+
+    trails[i].push({ x: pl.x, y: arcY });
+    if (trails[i].length > 80) trails[i].shift();
+
+    drawTrail(trails[i]);
+    drawPlane(pl.x, arcY, pl.scale, pl.opacity, angle);
+  }
+
+  ctx.globalAlpha = 1;
+  animId = requestAnimationFrame(frame);
+}
+
+window.addEventListener('resize', resize);
+resize();
+frame();
+</script>
+</body>
+</html>

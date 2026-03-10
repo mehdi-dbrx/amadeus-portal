@@ -1,0 +1,11 @@
+# Local env (PAT, workspace URL)
+.env.local
+.env*.local
+
+# Dependencies and build
+node_modules/
+dist/
+
+# Logs and OS
+*.log
+.DS_Store

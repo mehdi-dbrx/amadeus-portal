@@ -1,0 +1,22 @@
+# Sync app name from .env.local: python deploy/sync_databricks_yml_from_env.py
+bundle:
+  name: airops_portal
+
+resources:
+  apps:
+    airops_portal:
+      name: airops-portal
+      description: "Amadeus Operations Insights and Control landing portal (GARV AI)"
+      source_code_path: ./
+
+targets:
+  # Use: ./deploy/deploy.sh  (or DEPLOY_TARGET=airops ./deploy/deploy.sh)
+  # App name from DBX_APP_NAME in .env.local
+  airops:
+    mode: production
+    workspace:
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/airops
+    resources:
+      apps:
+        airops_portal:
+          name: airops-portal

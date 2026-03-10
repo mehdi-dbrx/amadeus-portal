@@ -1,0 +1,71 @@
+Aeroflot
+Air Canada
+Air China
+Air France
+Air India
+Air New Zealand
+AirAsia
+Alaska Airlines
+American Airlines
+ANA All Nippon Airways
+Asiana Airlines
+Austrian Airlines
+Avianca
+Azul Brazilian Airlines
+British Airways
+China Eastern Airlines
+China Southern Airlines
+Copa Airlines
+Delta Air Lines
+EasyJet
+EgyptAir
+Emirates
+Ethiopian Airlines
+Etihad Airways
+Eurowings
+Finnair
+Flydubai
+Frontier Airlines
+Garuda Indonesia
+GOL Airlines
+Iberia
+IndiGo
+ITA Airways
+Japan Airlines
+JetBlue
+Jetstar
+KLM
+Korean Air
+LATAM Airlines
+Lion Air
+LOT Polish Airlines
+Lufthansa
+Malaysia Airlines
+Norwegian Air
+Pegasus Airlines
+Philippine Airlines
+Qantas
+Qatar Airways
+Royal Air Maroc
+Ryanair
+S7 Airlines
+SAS Scandinavian Airlines
+Saudia
+Scoot
+Singapore Airlines
+South African Airways
+Southwest Airlines
+SpiceJet
+Spirit Airlines
+Swiss International Air Lines
+TAP Air Portugal
+Thai Airways
+Transavia
+Turkish Airlines
+United Airlines
+Vietjet Air
+Vietnam Airlines
+Virgin Australia
+Vueling
+WestJet
+Wizz Air

@@ -1,0 +1,45 @@
+{
+  "appTitle": "Amadeus Operations Insights and Control",
+  "customerName": "",
+  "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Amadeus_Organization_logo_2024.svg/1280px-Amadeus_Organization_logo_2024.svg.png",
+  "navItems": [
+    { "id": "home", "label": "Home", "path": "/" },
+    { "id": "reports", "label": "Reports", "path": "#" },
+    { "id": "network", "label": "Network", "path": "#" },
+    { "id": "users", "label": "Users", "path": "#" },
+    { "id": "documents", "label": "Documents", "path": "#" }
+  ],
+  "cards": [
+    {
+      "id": "garv",
+      "title": "GARV AI Ops Advisor",
+      "description": "GARV AI Ops Advisor is an intelligent, AI-powered analyst designed to transform operational decision-making for airports and airlines. It leverages Generative AI, agentic orchestration, machine learning, and big data analytics to deliver on-demand, personalised, and prescriptive insights through a conversational interface. This project is the universal Airops Assistant called GARV AI powering these solutions.",
+      "url": "https://agent-airops-7474657082726949.aws.databricksapps.com/",
+      "color": "violet"
+    },
+    {
+      "id": "turnaround",
+      "title": "Turnaround Management System",
+      "description": "End-to-end turnaround visibility: from gate assignment and ground handling to departure readiness. Monitor tasks, delays, and resource utilisation across the apron.",
+      "url": "https://agent-airops-7474657082726949.aws.databricksapps.com/",
+      "color": "blue",
+      "icon": "Plane"
+    },
+    {
+      "id": "fixed-resource",
+      "title": "Fixed Resource Management System",
+      "description": "Manage fixed resources such as stands, gates, and counters. Allocate and track availability, conflicts, and utilisation to maximise operational efficiency.",
+      "url": "https://agent-airops-7474657082726949.aws.databricksapps.com/",
+      "color": "teal",
+      "icon": "LayoutGrid"
+    },
+    {
+      "id": "checkin",
+      "title": "Check-in Performance Reports",
+      "description": "Access real-time and historical check-in performance metrics, queue times, and agent productivity. Optimise counter allocation and identify bottlenecks to improve passenger flow.",
+      "url": "https://agent-airops-7474657082726949.aws.databricksapps.com/",
+      "color": "amber",
+      "icon": "BarChart3"
+    }
+  ]
+}
