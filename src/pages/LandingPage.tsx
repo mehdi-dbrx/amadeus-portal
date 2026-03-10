@@ -181,7 +181,10 @@ export function LandingPage() {
         <h2 className="mb-6 font-semibold text-slate-800 text-xl dark:text-slate-200">
           Solutions
         </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          className="grid gap-6"
+          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}
+        >
           {visibleCards.map((card) => (
             <SolutionCard
               key={card.id}
