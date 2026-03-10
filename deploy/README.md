@@ -6,7 +6,7 @@ Deploy the portal as a Databricks App to the **same workspace and PAT** as amade
 
 - **Databricks CLI** installed and authenticated (same profile you use for amadeus-ground).
 - **`.env.local`** with `DATABRICKS_HOST`, `DATABRICKS_TOKEN`, and `DBX_APP_NAME` (e.g. `airops-portal`). You can copy amadeus-ground’s `.env.local` and set `DBX_APP_NAME=airops-portal`.
-- **Dynamic customer logo (optional):** Set `BRANDFETCH_CLIENT_ID` (and optionally `BRANDFETCH_API_KEY` for fallback) in the app’s environment. Users can then set a “Brand name” (e.g. `Amadeus`) in Settings; the logo is fetched via [Brandfetch Brand Search API](https://docs.brandfetch.com/reference/brand-search-api) (by company name).
+- **Dynamic customer logo (optional):** Set `BRANDFETCH_API_KEY` in `.env.local`. The deploy script injects it into `app.yaml` at deploy time so the deployed app has the key; `app.yaml` is restored after deploy so the secret is not committed.
 
 ## Quick deploy
 

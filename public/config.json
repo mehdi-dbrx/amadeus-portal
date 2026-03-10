@@ -19,10 +19,18 @@
     },
     {
       "id": "turnaround",
-      "title": "Turnaround Management System",
+      "title": "Turnaround Management System [Staff]",
       "description": "End-to-end turnaround visibility: from gate assignment and ground handling to departure readiness. Monitor tasks, delays, and resource utilisation across the apron.",
       "url": "https://agent-airops-7474657082726949.aws.databricksapps.com/",
       "color": "blue",
+      "icon": "Plane"
+    },
+    {
+      "id": "turnaround-phases",
+      "title": "Turnaround Management System [Phases]",
+      "description": "Turnaround management by phases: track and manage each phase of the turnaround process.",
+      "url": "https://amadeus-tms-7474657082726949.aws.databricksapps.com/",
+      "color": "emerald",
       "icon": "Plane"
     },
     {

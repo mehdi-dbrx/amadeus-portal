@@ -38,11 +38,30 @@ if databricks apps get "$APP_NAME" --output json &>/dev/null; then
   databricks bundle deployment bind airops_portal "$APP_NAME" -t "$TARGET" --auto-approve 2>/dev/null || true
 fi
 
+# Inject BRANDFETCH_API_KEY from .env.local into app.yaml for deployed app (then restore)
+APP_YAML_BAK=""
+if [ -f "app.yaml" ] && [ -f ".env.local" ]; then
+  if grep -q "BRANDFETCH_API_KEY" .env.local 2>/dev/null; then
+    APP_YAML_BAK=$(mktemp)
+    cp app.yaml "$APP_YAML_BAK"
+    if command -v python3 &>/dev/null; then
+      python3 deploy/inject_env_into_app_yaml.py 2>/dev/null || true
+    elif command -v uv &>/dev/null; then
+      uv run python deploy/inject_env_into_app_yaml.py 2>/dev/null || true
+    fi
+  fi
+fi
+
 echo "Validating bundle..."
 databricks bundle validate -t "$TARGET"
 
 echo "Deploying (bundle uploads source and links to app)..."
 databricks bundle deploy -t "$TARGET"
+
+# Restore app.yaml so repo does not contain secret
+if [ -n "$APP_YAML_BAK" ] && [ -f "$APP_YAML_BAK" ]; then
+  mv "$APP_YAML_BAK" app.yaml
+fi
 
 echo "Starting app..."
 databricks bundle run airops_portal -t "$TARGET"

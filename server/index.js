@@ -18,9 +18,7 @@ try {
 } catch {
   // dotenv not installed or failed
 }
-// Client ID for Brand Search API (query param ?c=). Same dashboard may provide API key for Brand API (Bearer).
-const BRANDFETCH_CLIENT_ID = process.env.BRANDFETCH_CLIENT_ID || process.env.BRANDFETCH_API_KEY;
-const BRANDFETCH_API_KEY = process.env.BRANDFETCH_API_KEY;
+const BRANDFETCH_API_KEY = process.env.BRANDFETCH_API_KEY?.trim();
 
 // CORS: allow same-origin; in production the app is same-origin
 app.use((req, res, next) => {
@@ -41,14 +39,17 @@ app.get('/api/brand', async (req, res) => {
     return res.status(400).json({ error: 'Missing or empty brand name' });
   }
 
-  if (!BRANDFETCH_CLIENT_ID) {
-    return res.status(503).json({ error: 'Brandfetch client ID not configured (set BRANDFETCH_CLIENT_ID or BRANDFETCH_API_KEY)' });
+  if (!BRANDFETCH_API_KEY) {
+    return res.status(503).json({ error: 'Brandfetch API key not configured (set BRANDFETCH_API_KEY)' });
   }
 
   try {
-    // Brand Search API: search by name, auth via client ID in query (https://docs.brandfetch.com/reference/brand-search-api)
-    const searchUrl = `${BRANDFETCH_SEARCH_BASE}/${encodeURIComponent(name)}?c=${encodeURIComponent(BRANDFETCH_CLIENT_ID)}`;
-    const searchRes = await fetch(searchUrl, { method: 'GET' });
+    // Brand Search API: search by name (Bearer token)
+    const searchUrl = `${BRANDFETCH_SEARCH_BASE}/${encodeURIComponent(name)}`;
+    const searchRes = await fetch(searchUrl, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${BRANDFETCH_API_KEY}` },
+    });
     const searchBody = await searchRes.text();
 
     if (!searchRes.ok) {
@@ -75,8 +76,8 @@ app.get('/api/brand', async (req, res) => {
     }
     let logoUrl = first.icon || null;
 
-    // If Search API didn't return an icon, try Brand API by domain (Bearer token) to get logos
-    if (!logoUrl && first.domain && BRANDFETCH_API_KEY) {
+    // If Search API didn't return an icon, try Brand API by domain to get logos
+    if (!logoUrl && first.domain) {
       const domain = String(first.domain).replace(/^https?:\/\//i, '').replace(/\/.*$/, '').toLowerCase();
       const brandRes = await fetch(`${BRANDFETCH_BRANDS_BASE}/domain/${encodeURIComponent(domain)}`, {
         method: 'GET',

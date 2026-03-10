@@ -7,7 +7,7 @@
  *   node scripts/test-brand-api.js Amadeus
  *   npm run test:brand-api -- Amadeus
  *
- * Requires BRANDFETCH_CLIENT_ID or BRANDFETCH_API_KEY in .env.local.
+ * Requires BRANDFETCH_API_KEY in .env.local (Bearer token).
  * Calls Brandfetch Search API directly so you can see the raw response/errors.
  *
  * To test our server's /api/brand instead (server must be running on port 8000):
@@ -37,26 +37,28 @@ try {
   console.warn('No .env.local found, using process env only');
 }
 
-const BRANDFETCH_CLIENT_ID = process.env.BRANDFETCH_CLIENT_ID || process.env.BRANDFETCH_API_KEY;
+const BRANDFETCH_API_KEY = process.env.BRANDFETCH_API_KEY?.trim();
 const BRANDFETCH_SEARCH_BASE = 'https://api.brandfetch.io/v2/search';
 
 async function main() {
   console.log('Testing Brandfetch Search API (by brand name)');
   console.log('  name:', name);
-  console.log('  client ID set:', !!BRANDFETCH_CLIENT_ID);
+  console.log('  API key set:', !!BRANDFETCH_API_KEY);
   console.log('');
 
-  if (!BRANDFETCH_CLIENT_ID) {
-    console.error('ERROR: Set BRANDFETCH_CLIENT_ID or BRANDFETCH_API_KEY in .env.local');
+  if (!BRANDFETCH_API_KEY) {
+    console.error('ERROR: Set BRANDFETCH_API_KEY in .env.local');
     process.exit(1);
   }
 
-  const url = `${BRANDFETCH_SEARCH_BASE}/${encodeURIComponent(name)}?c=${encodeURIComponent(BRANDFETCH_CLIENT_ID)}`;
-  console.log('GET', url);
+  const url = `${BRANDFETCH_SEARCH_BASE}/${encodeURIComponent(name)}`;
+  console.log('GET', url, '(Authorization: Bearer ...)');
   console.log('');
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${BRANDFETCH_API_KEY}` },
+    });
     const body = await res.text();
     console.log('Status:', res.status, res.statusText);
     console.log('Response (first 500 chars):', body.slice(0, 500));

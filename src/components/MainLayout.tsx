@@ -15,7 +15,7 @@ export function MainLayout() {
         <Header onOpenSettings={() => setSettingsOpen(true)} />
         <div className="flex min-h-0 flex-1">
           <Sidebar />
-          <main className="min-h-0 min-w-0 flex-1 overflow-auto">
+          <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-auto">
             <Outlet />
           </main>
         </div>

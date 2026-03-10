@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
   ExternalLink,
   BarChart3,
@@ -104,10 +105,8 @@ function SolutionCard({
       <p className={cn('flex-1 text-sm leading-relaxed', styles.description)}>
         {description}
       </p>
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
+        to={`/view?url=${encodeURIComponent(url)}`}
         className={cn(
           'mt-4 inline-flex items-center gap-1.5 font-medium text-sm',
           styles.link
@@ -115,7 +114,7 @@ function SolutionCard({
       >
         Open app
         <ExternalLink className="h-4 w-4" />
-      </a>
+      </Link>
     </article>
   );
 }
@@ -166,15 +165,13 @@ export function LandingPage() {
           </p>
           {garvCard && garvUrl && (
             <p className="mt-4">
-              <a
-                href={garvUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to={`/view?url=${encodeURIComponent(garvUrl)}`}
                 className="inline-flex items-center gap-1.5 font-medium text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
               >
                 Explore GARV
                 <ExternalLink className="h-4 w-4" />
-              </a>
+              </Link>
             </p>
           )}
         </div>
